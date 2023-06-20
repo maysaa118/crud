@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\ProductRequest;
 use App\Models\Category;
 use App\Models\Product;
+use App\Models\ProductImage;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller as RoutingController;
 use Illuminate\Routing\Route;
@@ -110,6 +111,7 @@ class ProductsController extends Controller
         //
         $product = product::find($id);//return Model object or null
         $categories =Category::all();
+        $gallery = ProductImage::where('product_id','=', $product->id)->get();
 
         return view('admin.products.edit',[
             'product' => $product,
@@ -137,6 +139,12 @@ class ProductsController extends Controller
         if($old_image && $old_image != $product->image){
             Storage::disk('/public' )->delete($old_image);
         }
+
+        // if($request->hasFile('gallery')){
+        //     foreach($request->file('gallery'as $file){
+        //         ProductImage::create
+        //     }
+        // }
 
 
         //$product =Product::findOrFail($id);

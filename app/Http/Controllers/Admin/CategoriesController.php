@@ -4,7 +4,9 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Category;
+use App\Models\Product;
 use Illuminate\Http\Request;
+
 
 class CategoriesController extends Controller
 {
@@ -31,7 +33,11 @@ class CategoriesController extends Controller
     public function create()
     {
         //
-        return view('admin.category.create');
+        //return view('admin.category.create');
+
+        $product = Product::create($request->all());
+        return redirect()->back()->with('status',true);
+   
     }
 
     /**
