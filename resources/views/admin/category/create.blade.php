@@ -20,7 +20,7 @@
         <label for="name">Category Name</label>
       </div>
 
-      <button type="submit" class="btn btn-success">Add Success</button>
+      <button type="submit" class="btn btn-success">Create New Category</button>
     </form>
 
   </div>

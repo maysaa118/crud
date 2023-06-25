@@ -8,7 +8,7 @@
             id="{{$id}}" name="{{$name}}">
             <option></option>
             @foreach ($options as $option_value => $option_text)
-            <option @selected($option_value==old ( $name , $value )) value="{{ $option_value }}">{{ $option_text }}</option>
+            <option @selected($option_value == old ( $name , $value )) value="{{ $option_value }}">{{ $option_text }}</option>
             @endforeach
         </select>
         <x-form.error name="{{ $name }}" />

@@ -1,10 +1,11 @@
 @props([
-    'id', 'name', 'label', 'value'=> '', 'type' => 'text'
+    'id', 'name', 'label', 'value' => '', 'type' => 'text'
     ])
     <div class="mb-3">
-            <label for="{{ $name}}">{{ $label }}</label>
+            <label for="{{ $name }}">{{ $label }}</label>
             <div>
-                <input type="{{ $type }}" class="form-control  @error($name) is-inavlid @enderror" id="{{$id}}" name="{{$name}}" value="{{old($name, $value) }}" placeholder="{{ $label }}">
+                <input type="{{ $type }}" class="form-control @error('name') is-invalid @enderror" 
+                id="{{$id}}" name="{{$name}}" value="{{old($name, $value) }}" placeholder="{{ $label }}">
                 <x-form.error name = "{{$name}}"/>
             </div>
         </div>

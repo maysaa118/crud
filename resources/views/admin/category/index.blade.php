@@ -1,19 +1,17 @@
-
-
 @extends('layouts.admin')
 @section('content')
 <div class="container">
   <h2 class="mb-4 fs-3">
-    <?= $title ?>
+    {{$title}}  
   </h2>
-  <a class="btn btn-primary m-5" href="{{route("categories.create")}}" role="button">+ Create Category</a>
+  <a class="btn btn-primary m-5" href="{{route('products.create')}}" role="button">Create Category</a>
   <table class="table">
     <thead>
       <tr>
         <th>Id</th>
         <th>Name</th>
-        <th>Edit</th>
-        <th>Delete</th>
+        <th></th>
+        <th></th>
       </tr>
     </thead>
     <tbody>

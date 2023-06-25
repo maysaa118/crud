@@ -20,14 +20,24 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-
 Route::get('/', function () {
     return view('welcome');
 });
 
-Route::resource('/admin/products',ProductsController::class);
-Route::resource('/admin/categories',CategoriesController::class);
+Route::resource('/admin/products', ProductsController::class);
+Route::resource('/admin/categories', CategoriesController::class);
 //Route::resource('/admin/categories', CategoryController::class);
+
+Route::get('/admin/products/trashed', [ProductsController::class, 'trashed'])
+    ->name('products.trashed');
+
+Route::put('/admin/products/{product}/restore', [ProductsController::class, 'restore'])
+    ->name('products.restore');
+
+Route::delete('/admin/produts/{product}/force', [ProductsController::class, 'forceDelete'])
+    ->name('products.force.delete');
+
+Route::resource('/admin/products', ProductsController::class);
 
 // Route::get('/admin/products',[ProductsController::class,'index'])->name('products.index');
 // Route::get('/admin/products/create',[ProductsController::class,'create']);
@@ -38,7 +48,7 @@ Route::resource('/admin/categories',CategoriesController::class);
 // Route::delete('/admin/products/{id}',[ProductsController::class,'destroy']);
 
 //http://127.0.0.1.8000/Users/
-Route::get('/Users',[Usercontroller::class,'index']); 
-Route::get('/Users/info',[Usercontroller::class,'info']);
-Route::get('/Users/info',[Usercontroller::class,'show']); 
-Route::get('/Users/{first}',[Usercontroller::class,'show']);
+Route::get('/Users', [Usercontroller::class, 'index']);
+Route::get('/Users/info', [Usercontroller::class, 'info']);
+Route::get('/Users/info', [Usercontroller::class, 'show']);
+Route::get('/Users/{first}', [Usercontroller::class, 'show']);

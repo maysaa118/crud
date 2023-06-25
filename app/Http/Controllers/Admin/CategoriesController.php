@@ -35,7 +35,6 @@ class CategoriesController extends Controller
         //
         //return view('admin.category.create');
 
-        $product = Product::create($request->all());
         return redirect()->back()->with('status',true);
    
     }
@@ -46,6 +45,8 @@ class CategoriesController extends Controller
     public function store(Request $request)
     {
         //
+        $product = Category::create($request->all());
+        return redirect()->back()->with('status',true);
     }
 
     /**
