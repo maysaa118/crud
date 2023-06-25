@@ -30,10 +30,9 @@
         @foreach ($products as $product)
         <tr>
             <td>
-                <a href="{{ $product->image_url }}">
-                    <img src="{{Storage::disk('public')->url($product->image) }}" width="60" alt="">
+                <a href="{{$product->image_url}}">
+                    <img src="{{$product->image_url}}" width="60" alt="">
                 </a>
-                <img src="http://placehold.co/60x60/orange/white?text=No+Image" alt="">
             </td>
             <td>{{ $product->id }} </td>
             <td>{{ $product->name }} </td>

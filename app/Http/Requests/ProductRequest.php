@@ -26,7 +26,7 @@ class ProductRequest extends FormRequest
         $id = $product? $product->id : 0;
         return [
             'name' =>'required|max:255|min:3',
-            'slug' => "required|unique:products,slug,{$product->id}",
+            'slug' => "required|unique:products,slug,{$id}",
             'category_id' =>'nullable|int|exists:categories,id',
             'description' =>'nullable|string',
             'short_description' =>'nullable|string|max:500',  
@@ -34,6 +34,8 @@ class ProductRequest extends FormRequest
             'compare_price' =>'nullable|numeric|min:0|gt:price',
             'image' =>'nullable|image|dimensions:min_width=400,min_height=300|max:1024',
             'status' =>'required|in:active,draft,archived',
+            'gallery' => 'nullable|array',
+            'gallery.*' => 'image',
         ];
     }
     public function messages(): array

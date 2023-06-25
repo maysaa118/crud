@@ -11,9 +11,17 @@ use NumberFormatter;
 class Product extends Model
 {
     use HasFactory, SoftDeletes;
+     //ثوابت
     const STATUS_ACTIVE = 'active';
     const STATUS_DRAFT = 'draft';
     const STATUS_ARCHIVED = 'archived';
+
+    protected $fillable = [
+        'name', 'slug', 'category_id', 'description', 'short_description',
+         'price', 'compare_price', 'image', 'status'
+    ];
+
+    // protected $guarded = ['id'];
 
     public static function statusOptions()
     {
@@ -31,16 +39,24 @@ class Product extends Model
         if ($this->image) {
             return Storage::disk('public')->url($this->image);
         }
-        return 'http://placehold.co/60x60/orange/white?text=No+Image';
+        return 'http://placehold.co/600x600/orange/white?text=No+Image';
     }
+    // public function getImageAttribute($value)
+    // {
+    //     if ($value) {
+    //         return Storage::disk('public')->url($value);
+    //     }
+    //     return 'http://placehold.co/600x600/orange/white?text=No+Image';
+    // }
 
-    public function getNameUrlAttribute($value)
+    public function getNameAttribute($value)
     {
         return ucwords($value);
     }
-    public function getPriceFormattedUrlAttribute($value)
+
+    public function getPriceFormattedAttribute()
     {
-        $foramtter = new NumberFormatter('en', NumberFormatter::CURRENCY);
-        return $foramtter->formatCurrency($this->price, 'EUR');
+        $foramtter = new NumberFormatter(config('app.locale'), NumberFormatter::CURRENCY);
+        return $foramtter->formatCurrency($this->price, 'USD');
     }
 }

@@ -63,15 +63,29 @@ class ProductsController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(ProductRequest $request)
     {
+        // $rules = $this->rules();
+        // $messages = $this->messages();
+        // $request->validate($rules, $messages);
+
         $data = $request->validated();
         if ($request->hasFile('image')) {
             $file = $request->file('image'); //return UploadedFile object
-            $path = $file->store('uploads/images', 'pulic'); //return file path after store
+            $path = $file->store('uploads/images', 'public'); //return file path after store
             $data['image'] = $path;
         }
         $product = Product::create($data);
+
+        if($request->hasFile('gallery')){
+            foreach($request->file('gallery') as $file){
+             ProductImage::create([
+                 'product_id' => $product->id,
+                 'image' => $file->store('uploads/images', 'public'),
+             ]);
+            } // array of uplaoded file
+         }
+         
 
         //$request->all();
         //$product = Product::create($request->all());
@@ -105,7 +119,7 @@ class ProductsController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(product $product)
+    public function edit(Product $product)
     {
         //
         //$product = product::find($id); //return Model object or null
@@ -124,21 +138,36 @@ class ProductsController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(ProductRequest $request, string $id)
+    public function update(ProductRequest $request, Product $product)
     {
+        // $rules = $this->rules($id);
+        // $messages = $this->messages();
+        // $request->validate($rules, $messages);
+        
 
-        $data = $request->validated();
+        $data = $request->validated();//mass assaigment
         if ($request->hasFile('image')) {
             $file = $request->file('image'); //return UploadedFile object
-            $path = $file->store('uploads/images', 'pulic'); //return file path after store
+            $path = $file->store('uploads/images', 'public'); //return file path after store
             $data['image'] = $path;
         }
 
         $old_image = $product->image;
-        $product = Product::create($data);
+        $product->update($data);
+        
         if ($old_image && $old_image != $product->image) {
             Storage::disk('/public')->delete($old_image);
         }
+
+        if($request->hasFile('gallery')){
+           foreach($request->file('gallery') as $file){
+            ProductImage::create([
+                'product_id' => $product->id,
+                'image' => $file->store('uploads/images', 'public'),
+            ]);
+           } // array of uplaoded file
+        }
+        
 
         // if($request->hasFile('gallery')){
         //     foreach($request->file('gallery'as $file){
@@ -164,12 +193,15 @@ class ProductsController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Product $product)
     {
-        //
+        //Product::where('id', '=', $id)->delete();
         // product::destroy($id);
-        $product = product::findOrFail($id);
+        //$product = product::findOrFail($id);
         $product->delete();
+        if ($product->image) {
+            Storage::disk('/public')->delete($product->image);
+        }
 
 
         //if($product->image){
@@ -213,7 +245,7 @@ class ProductsController extends Controller
     {
         return
             [
-                'required' => ':attribute field is require!',
+                'required' => ':attribute field is require!!',
                 'unique' => 'The value alredy exists!',
                 'name.required' => 'The product name is mandatory!',
             ];
