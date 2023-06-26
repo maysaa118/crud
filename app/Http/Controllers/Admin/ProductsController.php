@@ -37,10 +37,9 @@ class ProductsController extends Controller
                 'products.*',
                 'categories.name as category_name',
             ])
-            //->get();
-            //->withoutGlobalScope
-
-            ->paginate(2); //Collection of product model
+           // ->active()
+            //->withoutGlobalScope('owner')
+            ->paginate(5); //Collection of product model
 
         return view('admin.products.index', [
             'title' => 'Products List',
@@ -122,7 +121,7 @@ class ProductsController extends Controller
     public function edit(Product $product)
     {
         //
-        //$product = product::find($id); //return Model object or null
+        //$product = product::findOrFail($id); //return Model object or null
         $categories = Category::all();
         $gallery = ProductImage::where('product_id', '=', $product->id)->get();
 
@@ -199,14 +198,7 @@ class ProductsController extends Controller
         // product::destroy($id);
         //$product = product::findOrFail($id);
         $product->delete();
-        if ($product->image) {
-            Storage::disk('/public')->delete($product->image);
-        }
-
-
-        //if($product->image){
-        //  Storage
-        //}
+      
         return redirect()
             ->route('products.index')
             ->with('success', "Product({$product->name}) deleted");
@@ -225,14 +217,14 @@ class ProductsController extends Controller
         $product->restore();
         return redirect()
             ->route('products.index')
-            ->with('success', 'Product ({$product->name})');
+            ->with('success', "Product ({$product->name}) restored");
     }
 
 
-    public function forcDelete($id)
+    public function forceDelete($id)
     {
         $product = product::onlyTrashed()->findOrFail($id);
-        $product->forcDelete();
+        $product->forceDelete();
         if ($product->image) {
             Storage::disk('puplic')->delete($product->image);
         }

@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use Attribute;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -22,6 +24,22 @@ class Product extends Model
     ];
 
     // protected $guarded = ['id'];
+
+    protected static function booted()
+    {
+        static::addGlobalScope('owner', function(Builder $query) {
+            $query->where('user_id', '=', 1);
+        });
+    }
+
+    public function scopeActive(Builder $query){
+        $query->where('status', '=', 'active');
+
+    }
+    public function scopeStatus(Builder $query, $status){
+        $query->where('status', '=', $status);
+
+    }
 
     public static function statusOptions()
     {

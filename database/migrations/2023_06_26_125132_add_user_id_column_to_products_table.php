@@ -12,8 +12,11 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('products', function (Blueprint $table) {
-            //delete_at TimeStamp null
-            $table->softDeletes();
+            $table->foreignId('user_id')
+                ->after('id')
+                ->nullable()
+                ->constrained('users')
+                ->cascadeOnDelete();
         });
     }
 
@@ -23,8 +26,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('products', function (Blueprint $table) {
-            //
-            $table->dropSoftDeletes();
+            $table->dropConstrainedForeignId('user_id');
         });
     }
 };

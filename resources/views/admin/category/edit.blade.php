@@ -22,7 +22,7 @@
                 <label for="name">Category Name</label>
               </div>
 
-            <button type="submit" class="btn btn-success">Success</button>
+            <button type="submit" class="btn btn-success">Edit Success</button>
 
         </form>
     </div>

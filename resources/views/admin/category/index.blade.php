@@ -4,7 +4,7 @@
   <h2 class="mb-4 fs-3">
     {{$title}}  
   </h2>
-  <a class="btn btn-primary m-5" href="{{route('products.create')}}" role="button">Create Category</a>
+  <a class="btn btn-primary m-5" href="{{route('categories.create')}}" role="button">Create Category</a>
   <table class="table">
     <thead>
       <tr>

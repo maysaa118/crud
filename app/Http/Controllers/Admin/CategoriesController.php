@@ -35,7 +35,7 @@ class CategoriesController extends Controller
         //
         //return view('admin.category.create');
 
-        return redirect()->back()->with('status',true);
+        return view('admin.category.create')->with('title', 'create page');
    
     }
 
@@ -76,8 +76,10 @@ class CategoriesController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy($id)
     {
-        //
+       $status = Category::where('id' , $id)->delete();
+       return redirect()->back()->with('status' , $status);
+        
     }
 }
